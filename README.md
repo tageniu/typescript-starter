@@ -40,6 +40,13 @@ npm run lint
 
 Unit tests use mocked repositories for service-level logic. E2E tests run against an in-memory SQLite database to validate the real HTTP and persistence flow.
 
+## Implementation notes
+
+- Persistence uses SQLite through TypeORM. Running the app locally uses a file-backed database; tests cover both mocked units and real database-backed HTTP flows, matching the FAQ guidance to do both.
+- `User` and `Event` are modeled as a many-to-many relation through event invitees. User responses expose summarized related events for readability.
+- Merge-all is destructive by design: overlapping source events are replaced in the database by a merged event, and invitees are unioned across the merged cluster.
+- Additional review helpers beyond the minimum assignment API are included: `GET /`, `GET /users`, `GET /events`, and `DELETE /users/:id`.
+
 ## API
 
 ### Create a user
